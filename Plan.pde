@@ -8,8 +8,8 @@ int user_budget;
 String cityChosen;
 String[] activities;
 boolean choosePlanType;
-String FavouritePlans;
-String[] DemoPlans;
+String favouritePlans;
+String[] demoPlans;
 float adjustBudget();
 
 //CONSTRUCTOR
