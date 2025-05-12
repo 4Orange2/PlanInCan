@@ -8,17 +8,13 @@ class Page {
   Page() {
   }
   
-  //Methods
-  void displayPage() {
+  void displayPage(int page_num) {
+   if(page_num == 1){
     home_page = loadImage("planInCan_Logo.jpg");
     home_page.resize(1000,550);
     image(home_page, 0, 0);
-    
-  
-}
-  
-  
-  
+   }
+  }
   void mouseClicked() {
   
   }
