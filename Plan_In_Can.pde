@@ -10,7 +10,7 @@ void setup(){
 
 
 void draw(){
- display_item.displayPage();
+ display_item.displayPage(1);
   
   
 }
