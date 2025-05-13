@@ -1,7 +1,10 @@
+import g4p_controls.*;
+
 Page display_item;
 
 void setup(){
   size(1000, 550);
+  createGUI();
   display_item = new Page();
   
   
