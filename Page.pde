@@ -1,9 +1,12 @@
 PImage home_page;
 PImage canada_map;
+PImage map_banner;
+
 class Page {
   //FIELDS
   int page_num;
   boolean zoom;
+  Map Canada = new Map();
   
   //CONSTRUCTOR
   Page() {}
@@ -35,13 +38,7 @@ class Page {
       image(home_page, 850, 0);
     }
     else if (page_num == 4) {
-      canada_map = loadImage("Canada_Map.png");
-      pushMatrix();
-      canada_map.resize(int(1000*zoomFactor), int(550*zoomFactor));
-      image(canada_map, width/2, height/2);
-      popMatrix();
+      Canada.displayAll();
     }
   }
-  
-  void mouseClicked() {}
 }
