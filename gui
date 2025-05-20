@@ -28,6 +28,14 @@ public void button5_click1(GButton source, GEvent event) { //_CODE_:button5:9670
 public void button6_click1(GButton source, GEvent event) { //_CODE_:button6:499462:
 } //_CODE_:button6:499462:
 
+public void custom_slider1_change1(GCustomSlider source, GEvent event) { //_CODE_:Budget_Amount:478935:
+  println("Budget_Amount - GCustomSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:Budget_Amount:478935:
+
+public void dropList1_click1(GDropList source, GEvent event) { //_CODE_:ActivityType:761144:
+  println("ActivityType - GDropList >> GEvent." + event + " @ " + millis());
+} //_CODE_:ActivityType:761144:
+
 synchronized public void win_draw3(PApplet appc, GWinData data) { //_CODE_:Recommended_Page:693305:
 } //_CODE_:Recommended_Page:693305:
 
@@ -36,6 +44,14 @@ synchronized public void win_draw4(PApplet appc, GWinData data) { //_CODE_:Saved
 
 synchronized public void win_draw5(PApplet appc, GWinData data) { //_CODE_:New_Plan_Page:329619:
 } //_CODE_:New_Plan_Page:329619:
+
+synchronized public void win_draw6(PApplet appc, GWinData data) { //_CODE_:Map_Controls:298678:
+} //_CODE_:Map_Controls:298678:
+
+public void Guidance_clicked(GButton source, GEvent event) { //_CODE_:Guidance_button:215568:
+  user_map_description = true;
+  zoomFactor = 1;
+} //_CODE_:Guidance_button:215568:
 
 
 
@@ -47,28 +63,60 @@ public void createGUI(int page_num){
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
   if (page_num == 1) {
-    if (recommended_open == true) { 
+    if (recommended_open == true) {
       Recommended_Page.close();
       recommended_open = false;
     }
-    Home_Page = GWindow.getWindow(this, "Home_Page", 0, 0, 1000, 550, JAVA2D);
+    Home_Page = GWindow.getWindow(this, "Window title", 0, 0, 500, 300, JAVA2D);
     Home_Page.noLoop();
     Home_Page.setActionOnClose(G4P.CLOSE_WINDOW);
     Home_Page.addDrawHandler(this, "win_draw1");
-    button4 = new GButton(Home_Page, 327, 210, 92, 30);
+    button4 = new GButton(Home_Page, 27, 158, 92, 30);
     button4.setText("Saved Plans");
     button4.addEventHandler(this, "button4_click1");
-    button5 = new GButton(Home_Page, 328, 149, 93, 30);
+    button5 = new GButton(Home_Page, 25, 111, 93, 30);
     button5.setText("Recommended Plans");
     button5.addEventHandler(this, "button5_click1");
-    button6 = new GButton(Home_Page, 326, 91, 94, 30);
+    button6 = new GButton(Home_Page, 24, 67, 94, 30);
     button6.setText("Start a New Plan");
     button6.addEventHandler(this, "button6_click1");
+    label1 = new GLabel(Home_Page, 9, 18, 140, 37);
+    label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    label1.setText("What travel plan would you like to see?");
+    label1.setOpaque(false);
+    Budget_Amount = new GCustomSlider(Home_Page, 190, 150, 147, 40, "grey_blue");
+    Budget_Amount.setShowValue(true);
+    Budget_Amount.setShowLimits(true);
+    Budget_Amount.setLimits(70.0, 70.0, 1400.0);
+    Budget_Amount.setNbrTicks(10);
+    Budget_Amount.setShowTicks(true);
+    Budget_Amount.setNumberFormat(G4P.DECIMAL, 2);
+    Budget_Amount.setOpaque(false);
+    Budget_Amount.addEventHandler(this, "custom_slider1_change1");
+    label2 = new GLabel(Home_Page, 170, 110, 196, 37);
+    label2.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    label2.setText("How much would you roughly like to spend on each day of your travel?");
+    label2.setOpaque(false);
+    label3 = new GLabel(Home_Page, 232, 8, 258, 37);
+    label3.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    label3.setText("Input values for one or all of the questions below for output tailored towards you.");
+    label3.setOpaque(false);
+    label4 = new GLabel(Home_Page, 105, 234, 152, 46);
+    label4.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    label4.setText("What types of activities do you enjoy the most?");
+    label4.setOpaque(false);
+    ActivityType = new GDropList(Home_Page, 276, 214, 188, 80, 3, 10);
+    ActivityType.setItems(loadStrings("list_761144"), 0);
+    ActivityType.addEventHandler(this, "dropList1_click1");
+    label5 = new GLabel(Home_Page, 352, 45, 148, 40);
+    label5.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+    label5.setText("Do not input if generally browsing travel plans.");
+    label5.setOpaque(false);
     home_open = true;
     Home_Page.loop();
   }
   else if (page_num == 2) {
-    Recommended_Page = GWindow.getWindow(this, "Recommended_Page", 0, 0, 1000, 550, JAVA2D);
+    Recommended_Page = GWindow.getWindow(this, "Window title", 0, 0, 250, 250, JAVA2D);
     if (home_open == true) {
       Home_Page.close();
       home_open = false;
@@ -77,23 +125,30 @@ public void createGUI(int page_num){
       Recommended_Page.close();
     }
     Recommended_Page.noLoop();
-    Recommended_Page.setActionOnClose(G4P.CLOSE_WINDOW);
+    Recommended_Page.setActionOnClose(G4P.KEEP_OPEN);
     Recommended_Page.addDrawHandler(this, "win_draw3");
-    recommended_open = true;
     Recommended_Page.loop();
   }
   else if (page_num == 3) {
-    Saved_Plans = GWindow.getWindow(this, "Window title", 0, 0, 1000, 550, JAVA2D);
+    Saved_Plans = GWindow.getWindow(this, "Window title", 0, 0, 250, 250, JAVA2D);
     Saved_Plans.noLoop();
-    Saved_Plans.setActionOnClose(G4P.CLOSE_WINDOW);
+    Saved_Plans.setActionOnClose(G4P.KEEP_OPEN);
     Saved_Plans.addDrawHandler(this, "win_draw4");
     Saved_Plans.loop();
   }
-  else if (page_num == 4) {
+  else if (page_num == 4) {  
     if (home_open == true) {
       Home_Page.close();
       home_open = false;
     }
+    Map_Controls = GWindow.getWindow(this, "Window title", 0, 0, 250, 250, JAVA2D);
+    Map_Controls.noLoop();
+    Map_Controls.setActionOnClose(G4P.CLOSE_WINDOW);
+    Map_Controls.addDrawHandler(this, "win_draw6");
+    Guidance_button = new GButton(Map_Controls, 142, 34, 80, 30);
+    Guidance_button.setText("Give Map Guidance");
+    Guidance_button.addEventHandler(this, "Guidance_clicked");
+    Map_Controls.loop();
   }
 }
 
@@ -103,6 +158,15 @@ GWindow Home_Page;
 GButton button4; 
 GButton button5; 
 GButton button6; 
+GLabel label1; 
+GCustomSlider Budget_Amount; 
+GLabel label2; 
+GLabel label3; 
+GLabel label4; 
+GDropList ActivityType; 
+GLabel label5; 
 GWindow Recommended_Page;
 GWindow Saved_Plans;
 GWindow New_Plan_Page;
+GWindow Map_Controls;
+GButton Guidance_button; 
