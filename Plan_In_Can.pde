@@ -1,14 +1,41 @@
 import g4p_controls.*;
 Page display_item;
+Map Canada;
 
 int page_num = 1;
 int previous_page = 0;
-boolean home_open = false;
+boolean home_open = true;
 boolean recommended_open = false;
+boolean map_description = true;
+boolean user_map_description = false;
+float X_of_mouse = 0;
+float Y_of_mouse = 0;
+
+PVector[] city_coords = {new PVector(655, 520), new PVector(690,480), new PVector(770,440), new PVector(730, 480), new PVector(890, 430), new PVector(80, 390), new PVector(220, 370), new PVector(415, 435), new PVector(80, 210), new PVector(275, 255), new PVector(660, 235), new PVector(320, 410)};
+PVector[][] range_city_coords = new PVector[12][2];
+
+static final int POINT_SIZE = 30;
+PVector SIZE_POINT = new PVector(POINT_SIZE,POINT_SIZE);
 
 void setup(){
   size(1000, 550);
-  display_item = new Page();
+  display_item = new Page(); // creating a Page class object
+  Canada = new Map();
+  for (int city_index = 0; city_index < 12; city_index++) {
+  PVector init_coord_city = city_coords[city_index];
+  PVector first_coord_city = new PVector(init_coord_city.x - POINT_SIZE/2, init_coord_city.y - POINT_SIZE/2);
+  PVector second_coord_city = new PVector(init_coord_city.x + POINT_SIZE/2, init_coord_city.y + POINT_SIZE/2);
+    for (int pair_index = 0; pair_index < 2; pair_index++) {
+      if (pair_index == 0) {
+        range_city_coords[city_index][pair_index] = first_coord_city;
+      }
+      else if (pair_index == 1) {
+        println("entered");
+        range_city_coords[city_index][pair_index] = second_coord_city;
+      }
+    }
+    printArray(range_city_coords[city_index]);
+  }
 }
 
 
@@ -21,12 +48,21 @@ void draw(){
   }
   else if (page_num == previous_page) {}
   display_item.displayPage(page_num);
-  delay(1000);
 }
 
 void mouseClicked() {
-  if (((mouseX > 600) && (mouseX < 980)) && ((mouseY > 300) && (mouseY < 450))) {
-    page_num = 4;
+  if (page_num == 1) {
+    if (((mouseX > 380) && (mouseX < 980)) && ((mouseY > 150) && (mouseY < 450))) {
+      page_num = 4;
+    }
+  }
+  else if (page_num == 4) {
+    PVector ClickLocation = new PVector(mouseX, mouseY);
+    int[] on_city = Canada.checkCities(ClickLocation);
+    if (on_city[0] == 1) {
+      String MajorCity = Canada.MajorCitiesList[on_city[1]];
+      Canada.ShowMajorCity(MajorCity);
+    }
   }
 }
 
@@ -34,16 +70,22 @@ float zoomFactor = 1;
 
 
 void mouseWheel(MouseEvent event) {
-  int delta = event.getCount();  // Get the scroll amount (delta)
-  if (delta > 0) {
-    // Zoom in (positive delta)
-    zoomFactor += 0.1; // Adjust zoom level (example: +0.1)
-  } 
-  else if (delta < 0) {
+  if (page_num == 4) {
+    int delta = event.getCount();  // Get the scroll amount (delta)
+    if (delta > 0) { // 
+      // Zoom in (positive delta)
+      zoomFactor += 0.1; // Adjust zoom level (example: +0.1)
+      X_of_mouse = mouseX;
+      Y_of_mouse = mouseY;
+    } 
+    else if (delta < 0) {
       // Zoom out (negative delta)
-      if ((zoomFactor - delta) >= 1) {
+      if ((zoomFactor - 0.1) > 0.55) {
         zoomFactor -= 0.1; // Adjust zoom level (example: -0.1)
+        X_of_mouse = mouseX;
+        Y_of_mouse = mouseY;
       }
       else {}
     }
   }
+}
