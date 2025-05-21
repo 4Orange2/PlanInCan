@@ -10,31 +10,17 @@ String[] activities;
 boolean choosePlanType;
 String favouritePlans;
 String[] demoPlans;
-float adjustBudget;
 
 //CONSTRUCTOR
-Plan(){
-
-
-}
+Plan(){}
 
 //METHODS
 void budget(){
 
 
 }
-void displayActivities(float cityChosen){
-
-}
-void activityChosen(int activity){
-
-}
-void savePlan(){
-
-
-}
-void setAllValues(){
-
-}
-
+void displayActivities(String cityChosen) {}
+void activityChosen(String activity) {}
+void savePlan(){}
+void setAllValues(){}
 }
