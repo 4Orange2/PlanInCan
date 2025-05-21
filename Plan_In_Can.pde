@@ -6,8 +6,7 @@ int page_num = 1;
 int previous_page = 0;
 boolean home_open = true;
 boolean recommended_open = false;
-boolean map_description = true;
-boolean user_map_description = false;
+boolean user_map_description = true;
 float X_of_mouse = 0;
 float Y_of_mouse = 0;
 
@@ -16,6 +15,11 @@ PVector[][] range_city_coords = new PVector[12][2];
 
 static final int POINT_SIZE = 30;
 PVector SIZE_POINT = new PVector(POINT_SIZE,POINT_SIZE);
+
+String MajorCityDisplay = "";
+
+boolean attraction_preference = false;
+String preferred_type = "";
 
 void setup(){
   size(1000, 550);
@@ -60,8 +64,8 @@ void mouseClicked() {
     PVector ClickLocation = new PVector(mouseX, mouseY);
     int[] on_city = Canada.checkCities(ClickLocation);
     if (on_city[0] == 1) {
-      String MajorCity = Canada.MajorCitiesList[on_city[1]];
-      Canada.ShowMajorCity(MajorCity);
+      MajorCityDisplay = Canada.MajorCitiesList[on_city[1]];
+      Canada.ShowMajorCity(MajorCityDisplay);
     }
   }
 }
@@ -72,7 +76,7 @@ float zoomFactor = 1;
 void mouseWheel(MouseEvent event) {
   if (page_num == 4) {
     int delta = event.getCount();  // Get the scroll amount (delta)
-    if (delta > 0) { // 
+    if (delta > 0) { 
       // Zoom in (positive delta)
       zoomFactor += 0.1; // Adjust zoom level (example: +0.1)
       X_of_mouse = mouseX;
