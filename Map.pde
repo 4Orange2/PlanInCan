@@ -25,10 +25,33 @@ class Map {
     return return_array;
   }
   
-  void mapBasics() {
-  
+  void DisplayMajorCity(String Major_City) {
+    int BANNER_SHIFT = 400;
+    map_banner = loadImage("banner_image_transparent.png");
+    map_banner.resize(500, 400);
+    image(map_banner, 70+BANNER_SHIFT,-100);
+    textSize(25);
+    fill(0, 0, 0);
+    text(Major_City, 280+BANNER_SHIFT, 75);
+    fill(0, 255, 0);
+    rect(220+(BANNER_SHIFT*0.8), 110, 380, 400);
+    fill(0);
+    if (attraction_preference == false) {
+      text("Top attractions: ", 260+(BANNER_SHIFT*0.75), 150);
+      
+    }
+    else {
+      if (preferred_type == "nature") {
+        
+      }
+      else if (preferred_type == "history") {
+        
+      }
+      else if (preferred_type == "day-to-day") {
+        
+      }
+    }
   }
-  
   
   void displayAll() {
     canada_map = loadImage("Canada_Map.png"); // this is going to be turned into a map object
@@ -37,6 +60,7 @@ class Map {
     if (city_viewing == true) {
       x_translate = 0;
       y_translate = 0;
+      DisplayMajorCity(MajorCityDisplay);
     }
     else {
       translate((X_of_mouse - X_of_mouse*zoomFactor), (Y_of_mouse - Y_of_mouse*zoomFactor));
@@ -44,7 +68,7 @@ class Map {
       y_translate = Y_of_mouse - Y_of_mouse*zoomFactor;
     }
     image(canada_map, 0, 0);
-    if (map_description || user_map_description) {
+    if (user_map_description && zoomFactor == 1) {
       map_banner = loadImage("banner_image_transparent.png");
       map_banner.resize(900, 400);
       image(map_banner, 70, -100);
@@ -57,7 +81,7 @@ class Map {
       text("Click on the city that you would like to view for more", 260, 150);
     }
     if (zoomFactor != 1) {
-      map_description = false;
+      user_map_description = false;
     }
     fill(255, 0, 0);
     for (PVector city: city_coords) {
@@ -71,7 +95,7 @@ class Map {
       PVector base_coord = range_city_coords[on_city[1]][0];
       circle((base_coord.x+ POINT_SIZE/2)*zoomFactor, (base_coord.y+ POINT_SIZE/2)*zoomFactor, POINT_SIZE);
       fill(0);
-      text(MajorCitiesList[on_city[1]], base_coord.x, base_coord.y - 10);
+      text(MajorCitiesList[on_city[1]], base_coord.x*zoomFactor, base_coord.y*zoomFactor - 10);
     }
     popMatrix();
     if (city_viewing == true) {
@@ -104,5 +128,6 @@ class Map {
   void ShowMajorCity(String MajorCity) {
     zoomFactor = 0.5;
     city_viewing = true;
+    
   }
 }
