@@ -29,12 +29,12 @@ public void button6_click1(GButton source, GEvent event) { //_CODE_:button6:4994
 } //_CODE_:button6:499462:
 
 public void custom_slider1_change1(GCustomSlider source, GEvent event) { //_CODE_:Budget_Amount:478935:
-  println("Budget_Amount - GCustomSlider >> GEvent." + event + " @ " + millis());
+  desired_budget = Budget_Amount.getValueF();
 } //_CODE_:Budget_Amount:478935:
 
 public void ActivityTypeSelected(GDropList source, GEvent event) { //_CODE_:ActivityType:761144:
   preferred_type = ActivityType.getSelectedText();
-  println("YAY: ", preferred_type);
+  //println("YAY: ", preferred_type);
   if ("Nature and Environment".equals(preferred_type) || "History and Landmarks".equals(preferred_type) || "Day-to-day Culture".equals(preferred_type)) {
       attraction_preference = true;
   }
@@ -45,6 +45,64 @@ public void ActivityTypeSelected(GDropList source, GEvent event) { //_CODE_:Acti
 
 synchronized public void win_draw3(PApplet appc, GWinData data) { //_CODE_:Recommended_Page:693305:
 } //_CODE_:Recommended_Page:693305:
+
+public void textfield1_change1(GTextField source, GEvent event) { //_CODE_:textfield1:507049:
+  recommend_text1_entered = textfield1.getText().trim().toLowerCase();
+  if (recommend_text1_entered.equals("northern")) {
+    desired_area = "northern";
+  }
+  else if (recommend_text1_entered.equals("eastern")) {
+    desired_area = "eastern";
+  }
+  else if (recommend_text1_entered.equals("western")) {
+    desired_area = "western";
+  }
+  else if (recommend_text1_entered.equals("southern")) {
+    desired_area = "southern";
+  }
+  println(recommend_text1_entered);
+} //_CODE_:textfield1:507049:
+
+public void button3_click1(GButton source, GEvent event) { //_CODE_:button3:320579:
+  yes_public_transit = true;
+  //println("yes");
+} //_CODE_:button3:320579:
+
+public void button7_click1(GButton source, GEvent event) { //_CODE_:button7:732297:
+  yes_public_transit = false;
+  //println("no");
+} //_CODE_:button7:732297:
+
+public void textfield2_change1(GTextField source, GEvent event) { //_CODE_:textfield2:725393:
+  recommend_text2_entered = textfield2.getText().trim().toLowerCase();
+  println(recommend_text2_entered);
+  if (recommend_text2_entered.equals("summer")) {
+    desired_season = "summer";
+  }
+  else if (recommend_text2_entered.equals("spring")) {
+    desired_season = "spring";
+  }
+  else if (recommend_text2_entered.equals("fall")) {
+    desired_season = "fall";
+  }
+  else if (recommend_text2_entered.equals("winter")) {
+    desired_season = "winter";
+  }
+} //_CODE_:textfield2:725393:
+
+public void button8_click1(GButton source, GEvent event) { //_CODE_:button8:440593:
+  to_be_displayed = Canada_Plan.calculateRecommended(desired_budget, preferred_type, desired_area, yes_public_transit, desired_season);
+  recommended_viewing = true;
+  textfield1.setText("");
+  textfield2.setText("");
+  yes_public_transit = false;
+  desired_season = "";
+} //_CODE_:button8:440593:
+
+public void button9_click1(GButton source, GEvent event) { //_CODE_:button9:308323:
+  page_num = 1;
+} //_CODE_:button9:308323:
+
 
 synchronized public void win_draw4(PApplet appc, GWinData data) { //_CODE_:Saved_Plans:620595:
 } //_CODE_:Saved_Plans:620595:
@@ -66,13 +124,13 @@ public void button1_click1(GButton source, GEvent event) { //_CODE_:button1:8545
   zoomFactor = 1;
 } //_CODE_:button1:854571:
 
-
 public void Back_Home_Map(GButton source, GEvent event) { //_CODE_:button2:493081:
   page_num = 1;
   city_viewing = false;
   zoomFactor = 1;
   user_map_description = true;
 } //_CODE_:button2:493081:
+
 
 
 // Create all the GUI controls. 
@@ -84,6 +142,7 @@ public void createGUI(int page_num){
   surface.setTitle("Sketch Window");
   if (page_num == 1) {
     attraction_preference = false;
+    preferred_type = "No preference";
     if (recommended_open == true) {
       Recommended_Page.close();
       recommended_open = false;
@@ -109,16 +168,16 @@ public void createGUI(int page_num){
   label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   label1.setText("What travel plan would you like to see?");
   label1.setOpaque(false);
-  Budget_Amount = new GCustomSlider(Home_Page, 149, 136, 147, 70, "grey_blue");
+  Budget_Amount = new GCustomSlider(Home_Page, 151, 119, 147, 70, "grey_blue");
   Budget_Amount.setShowValue(true);
   Budget_Amount.setShowLimits(true);
-  Budget_Amount.setLimits(70.0, 70.0, 1400.0);
+  Budget_Amount.setLimits(desired_budget, 1300.0, 5000.0);
   Budget_Amount.setNbrTicks(10);
   Budget_Amount.setShowTicks(true);
   Budget_Amount.setNumberFormat(G4P.DECIMAL, 2);
   Budget_Amount.setOpaque(false);
   Budget_Amount.addEventHandler(this, "custom_slider1_change1");
-  label2 = new GLabel(Home_Page, 150, 88, 215, 37);
+  label2 = new GLabel(Home_Page, 148, 79, 215, 37);
   label2.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   label2.setText("How many dollars would you roughly like to spend on each day of your travel?");
   label2.setOpaque(false);
@@ -142,16 +201,49 @@ public void createGUI(int page_num){
     Home_Page.loop();
   }
   else if (page_num == 2) {
-    Recommended_Page = GWindow.getWindow(this, "Window title", 0, 0, 250, 250, JAVA2D);
     if (home_open == true) {
       Home_Page.close();
       home_open = false;
     }
-    Recommended_Page.noLoop();
-    Recommended_Page.setActionOnClose(G4P.CLOSE_WINDOW);
-    Recommended_Page.addDrawHandler(this, "win_draw3");
-    Recommended_Page.loop();
-    recommended_open = true;
+    Recommended_Page = GWindow.getWindow(this, "Window title", 0, 0, 500, 300, JAVA2D);
+  Recommended_Page.noLoop();
+  Recommended_Page.setActionOnClose(G4P.CLOSE_WINDOW);
+  Recommended_Page.addDrawHandler(this, "win_draw3");
+  label8 = new GLabel(Recommended_Page, 18, 17, 218, 50);
+  label8.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label8.setText("In addition to the questions on the home_page, feel free to answer any of these for more accurate recommendations.");
+  label8.setOpaque(false);
+  label9 = new GLabel(Recommended_Page, 16, 82, 220, 52);
+  label9.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label9.setText("Generally, would you like to travel in the northern, eastern, western, or southern parts of Canada (pick one of the four).");
+  label9.setOpaque(false);
+  textfield1 = new GTextField(Recommended_Page, 294, 79, 120, 30, G4P.SCROLLBARS_NONE);
+  textfield1.setOpaque(true);
+  textfield1.addEventHandler(this, "textfield1_change1");
+  label10 = new GLabel(Recommended_Page, 16, 150, 222, 69);
+  label10.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label10.setText("Would you like somewhere with good access to public transport? (Click whichever desired button once)");
+  label10.setOpaque(false);
+  button3 = new GButton(Recommended_Page, 256, 171, 80, 30);
+  button3.setText("Yes");
+  button3.addEventHandler(this, "button3_click1");
+  button7 = new GButton(Recommended_Page, 359, 171, 80, 30);
+  button7.setText("No");
+  button7.addEventHandler(this, "button7_click1");
+  label11 = new GLabel(Recommended_Page, 13, 239, 228, 53);
+  label11.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label11.setText("Which of the four seasons are you planning on travelling in?");
+  label11.setOpaque(false);
+  textfield2 = new GTextField(Recommended_Page, 295, 252, 120, 30, G4P.SCROLLBARS_NONE);
+  textfield2.setOpaque(true);
+  textfield2.addEventHandler(this, "textfield2_change1");
+  button8 = new GButton(Recommended_Page, 294, 18, 187, 30);
+  button8.setText("Generate Recommendation");
+  button8.addEventHandler(this, "button8_click1");
+  button9 = new GButton(Recommended_Page, 413, 266, 85, 30);
+  button9.setText("Back To Home Page");
+  button9.addEventHandler(this, "button9_click1");
+  Recommended_Page.loop();
   }
   else if (page_num == 3) {
     Saved_Plans = GWindow.getWindow(this, "Window title", 0, 0, 250, 250, JAVA2D);
@@ -197,9 +289,21 @@ GLabel label4;
 GDropList ActivityType; 
 GLabel label5; 
 GWindow Recommended_Page;
+GLabel label8; 
+GLabel label9; 
+GTextField textfield1; 
+GLabel label10; 
+GButton button3; 
+GButton button7; 
+GLabel label11; 
+GTextField textfield2; 
+GButton button8;
+GButton button9; 
 GWindow Saved_Plans;
 GWindow New_Plan_Page;
 GWindow Map_Controls;
 GButton Guidance_button; 
-GButton button1;
+GButton button1; 
+GLabel label6; 
 GButton button2; 
+GLabel label7;
