@@ -29,12 +29,19 @@ boolean yes_public_transit = false;
 String desired_season = "";
 String desired_area = "";
 
+int the_one_to_display = 0;
+
 float desired_budget = 5000.0;
 
 int recommended_display = 0; // the index to display the information for
 boolean recommended_viewing = false;
 
 ArrayList<String> to_be_displayed = new ArrayList<String>();
+
+String[] image_collection = {};
+
+boolean from_map = true;
+String city_collection = "";
 
 void setup(){
   size(1000, 550);
@@ -77,11 +84,47 @@ void mouseClicked() {
     }
   }
   else if (page_num == 4) {
+    recommended_display = 0;
     PVector ClickLocation = new PVector(mouseX, mouseY);
     int[] on_city = Canada.checkCities(ClickLocation);
     if (on_city[0] == 1) {
       MajorCityDisplay = Canada.MajorCitiesList[on_city[1]];
       Canada.ShowMajorCity(MajorCityDisplay);
+    }
+    boolean on_images = Canada_Plan.on_images(ClickLocation);
+    if (city_viewing==true) {
+      if (on_images) {
+        the_one_to_display = 0;
+        city_collection = MajorCityDisplay;
+        page_num = 5;
+      }
+    }
+    
+  }
+  else if ((page_num == 2) && (recommended_viewing == true)) {
+    recommended_display = 0;
+    PVector ClickLocation = new PVector(mouseX, mouseY);
+    boolean on_images = Canada_Plan.on_images(ClickLocation);
+    if (on_images) {
+      the_one_to_display = 0;
+      from_map = false;
+      page_num = 5;
+    }
+  }
+  else if (page_num == 5) {
+    PVector ClickLocation = new PVector(mouseX, mouseY);
+    boolean on_next = Canada_Plan.on_next(ClickLocation);
+    if (on_next) {
+      if ((the_one_to_display+1) < (image_collection.length)) {
+        the_one_to_display += 1;
+      }
+      else {
+        the_one_to_display = 0;
+      }
+    }
+    boolean on_home = Canada_Plan.on_home(ClickLocation);
+    if (on_home) {
+      page_num = 1;
     }
   }
 }
