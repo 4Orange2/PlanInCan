@@ -7,6 +7,7 @@ class Page {
   int page_num;
   boolean zoom;
   Map Canada = new Map();
+  Plan Recommended = new Plan();
   
   //CONSTRUCTOR
   Page() {}
@@ -50,6 +51,25 @@ class Page {
       home_page = loadImage("planInCan_Logo_transparent.png");
       home_page.resize(150, 75);
       image(home_page, 850, 0);
+      map_banner = loadImage("banner_image_transparent.png");
+      map_banner.resize(500, 400);
+      image(map_banner,-50,-120);
+      fill(0);
+      textSize(20);
+      text("Recommendation Page", 80, 50);
+      fill(0,0,100);
+      rect(10, 100, 530, 100);
+      fill(255, 165, 0);
+      strokeWeight(4);
+      textSize(23);
+      int start_Home_space = 130;
+      int in_between_space = 30;
+      text("You do not have fill in an answer for every question.", 20, start_Home_space);
+      text("If no answer is given, then the question will not be", 20, start_Home_space+in_between_space*1);
+      text("accounted for in the recommendations generated.", 20, start_Home_space+in_between_space*2);
+      if (recommended_viewing == true) {
+        Recommended.displayRecommended(to_be_displayed);
+      }
     }
     else if (page_num == 4) {
       Canada.displayAll();
