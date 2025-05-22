@@ -1,6 +1,7 @@
 import g4p_controls.*;
 Page display_item;
 Map Canada;
+Plan Canada_Plan;
 
 int page_num = 1;
 int previous_page = 0;
@@ -22,10 +23,24 @@ String MajorCityDisplay = "";
 boolean attraction_preference = false;
 String preferred_type = "";
 
+String recommend_text1_entered = "";
+String recommend_text2_entered = "";
+boolean yes_public_transit = false;
+String desired_season = "";
+String desired_area = "";
+
+float desired_budget = 5000.0;
+
+int recommended_display = 0; // the index to display the information for
+boolean recommended_viewing = false;
+
+ArrayList<String> to_be_displayed = new ArrayList<String>();
+
 void setup(){
   size(1000, 550);
   display_item = new Page(); // creating a Page class object
   Canada = new Map();
+  Canada_Plan = new Plan();
   for (int city_index = 0; city_index < 12; city_index++) {
   PVector init_coord_city = city_coords[city_index];
   PVector first_coord_city = new PVector(init_coord_city.x - POINT_SIZE/2, init_coord_city.y - POINT_SIZE/2);
