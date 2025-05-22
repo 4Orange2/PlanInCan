@@ -199,7 +199,7 @@ String[] MakeCityImageList(String MajorCity) {
         to_image = init_lines[line_index];
       }
       else {
-        to_image += init_lines[line_index];
+        to_image += init_lines[line_index].trim();
       }
       // part to deteremine whether or not to "continue on" to the next line, or enter an attraction entry into "lines" array
       if (line_index != (init_lines.length - 1)) {
@@ -249,6 +249,59 @@ String[] OutputAttractions(String preferred_type, String MajorCity) {
     printArray(lines);
     return lines;
   }
+
+boolean on_images(PVector ClickLocation) {
+  if (((ClickLocation.x > 50) && (ClickLocation.x < 370)) && ((ClickLocation.y > 420) && (ClickLocation.y < 530))) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+boolean on_next(PVector ClickLocation) {
+  if (((ClickLocation.x > 300) && (ClickLocation.x < 700)) && ((ClickLocation.y > 420) && (ClickLocation.y < 530))) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+boolean on_home(PVector ClickLocation) {
+  if (((ClickLocation.x > 10) && (ClickLocation.x < 310)) && ((ClickLocation.y > 20) && (ClickLocation.y < 70))) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+
+void showImages(String Major_City) {
+  image_collection = MakeCityImageList(Major_City);
+  PImage one_of_them = loadImage(image_collection[the_one_to_display]);
+  one_of_them.resize(500, 300);
+  image(one_of_them, 250, 130);
+  int BANNER_SHIFT = 400;
+  map_banner = loadImage("banner_image_transparent.png");
+  map_banner.resize(500, 400);
+  image(map_banner, -160+BANNER_SHIFT+20,-100);
+  textSize(25);
+  fill(0, 0, 0);
+  text("Image Collection:", 30+BANNER_SHIFT, 30);
+  text(Major_City, 50+BANNER_SHIFT+15, 75);
+  fill(125, 125, 0);
+  rect(300, 450, 400, 80);
+  fill(0, 0, 0);
+  textSize(25);
+  text("Go to next image", 420, 500);
+  fill (125, 0, 125);
+  rect(10, 20, 200, 50);
+  fill(255);
+  textSize(25);
+  text("Back to Home", 30, 50);
+}
 
 void DisplayMajorCity(String Major_City) {
     int BANNER_SHIFT = 400;
@@ -340,8 +393,4 @@ void DisplayMajorCity(String Major_City) {
       println("Sorry, But no recommendations have been made with the desired settings inputted");
     }
   }
-
-void savePlan(){}
-void setAllValues(){}
-void budget(){}
 }
