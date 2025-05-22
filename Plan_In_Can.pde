@@ -6,6 +6,7 @@ int page_num = 1;
 int previous_page = 0;
 boolean home_open = true;
 boolean recommended_open = false;
+boolean map_open = false;
 boolean user_map_description = true;
 float X_of_mouse = 0;
 float Y_of_mouse = 0;
@@ -34,11 +35,11 @@ void setup(){
         range_city_coords[city_index][pair_index] = first_coord_city;
       }
       else if (pair_index == 1) {
-        println("entered");
+        //println("entered");
         range_city_coords[city_index][pair_index] = second_coord_city;
       }
     }
-    printArray(range_city_coords[city_index]);
+    //printArray(range_city_coords[city_index]);
   }
 }
 
@@ -75,21 +76,23 @@ float zoomFactor = 1;
 
 void mouseWheel(MouseEvent event) {
   if (page_num == 4) {
-    int delta = event.getCount();  // Get the scroll amount (delta)
-    if (delta > 0) { 
-      // Zoom in (positive delta)
-      zoomFactor += 0.1; // Adjust zoom level (example: +0.1)
-      X_of_mouse = mouseX;
-      Y_of_mouse = mouseY;
-    } 
-    else if (delta < 0) {
-      // Zoom out (negative delta)
-      if ((zoomFactor - 0.1) > 0.55) {
-        zoomFactor -= 0.1; // Adjust zoom level (example: -0.1)
+    if (city_viewing == false) {
+      int delta = event.getCount();  // Get the scroll amount (delta)
+      if (delta > 0) { 
+        // Zoom in (positive delta)
+        zoomFactor += 0.1; // Adjust zoom level (example: +0.1)
         X_of_mouse = mouseX;
         Y_of_mouse = mouseY;
+      } 
+      else if (delta < 0) {
+        // Zoom out (negative delta)
+        if ((zoomFactor - 0.1) > 0.55) {
+          zoomFactor -= 0.1; // Adjust zoom level (example: -0.1)
+          X_of_mouse = mouseX;
+          Y_of_mouse = mouseY;
+        }
+        else {}
       }
-      else {}
     }
   }
 }
