@@ -74,5 +74,13 @@ class Page {
     else if (page_num == 4) {
       Canada.displayAll();
     }
+    else if (page_num == 5) {
+      if (from_map) {
+        Canada_Plan.showImages(city_collection);
+      }
+      else {
+        Canada_Plan.showImages(to_be_displayed.get(recommended_display));
+      }
+    }
   }
 }
