@@ -53,7 +53,8 @@ boolean checkcityBudget(float budget_threshold, int city_index) {
 }
 
 boolean checkcityAttractionType(String attractionType, int city_index) {
-  println("this FUNCTION");
+  // used in the recommended algorithm for attractionType
+  //println("this FUNCTION");
   if (attraction_preference == false) {
     return true;
   }
@@ -69,6 +70,7 @@ boolean checkcityAttractionType(String attractionType, int city_index) {
 }
 
 boolean checkTransport(boolean public_transport, int city_index) {
+  // used in the recommended algorithm for whether or not the user cares about public transport
   if (public_transport == false) {
     return true;
   }
@@ -83,6 +85,8 @@ boolean checkTransport(boolean public_transport, int city_index) {
 }
 
 boolean checkseason(String season, int city_index) {
+  // used in the recommended algorithm for season preferrence
+  // the only one really considered is winter
   if (badSeason[city_index].equals(season)) {
     return false;
   }
@@ -390,7 +394,11 @@ void DisplayMajorCity(String Major_City) {
       DisplayMajorCity(to_be_displayed.get(recommended_display));
     }
     else {
-      println("Sorry, But no recommendations have been made with the desired settings inputted");
+      fill(160, 90, 0);
+      rect(160, 260, 550, 100);
+      fill(0);
+      text("Sorry, but no recommendations have been made", 200, 300); 
+      text("with the desired settings inputted", 200, 330);
     }
   }
 }
